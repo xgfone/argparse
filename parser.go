@@ -17,10 +17,20 @@ import (
 	"github.com/xgfone/go-tools/parse"
 )
 
+// Tag
 const (
-	TAG_NAME    = "name"
+	// The name of the option
+	TAG_NAME = "name"
+
+	// The default value of the option
 	TAG_DEFAULT = "default"
-	TAG_HELP    = "help"
+
+	// The help content of the option
+	TAG_HELP = "help"
+
+	// The strategy sets, which a string separated by the comma,
+	// such as "skip,valid".
+	TAG_STRATEGY = "strategy"
 )
 
 var (

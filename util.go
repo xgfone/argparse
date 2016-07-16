@@ -5,8 +5,9 @@ import (
 	"strings"
 )
 
+// Strategy Sets
 const (
-	TAG_STRATEGY  = "strategy"
+	// If there is this strategy in a certain option, don't register it.
 	STRATEGY_SKIP = "skip"
 )
 
