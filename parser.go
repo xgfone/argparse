@@ -45,6 +45,7 @@ type Parser struct {
 	cache         map[string]interface{}
 	group         map[string]interface{}
 	flagSet       *flag.FlagSet
+	parsed        bool
 }
 
 // New create a new parser.
@@ -67,14 +68,24 @@ func (p *Parser) SetDefaultGroup(name string) {
 
 // Parse the arguments to the registered structs.
 //
-// If args is not nil, it's the arguments. Or use os.Args[1:]
+// If args is not nil, it's the arguments. Or use os.Args[1:].
+// If it has been parsed, don't parse it again.
+// For parsing it againt, you can create a new parser.
 func (p *Parser) Parse(args []string) {
 	if args == nil {
 		args = os.Args[1:]
 	}
-	p.flagSet.Parse(args)
 
+	if p.parsed {
+		return
+	}
+	p.flagSet.Parse(args)
 	p.setSalues()
+}
+
+// Return true if parsed, or false.
+func (p Parser) Parsed() bool {
+	return p.parsed
 }
 
 // Register a pointer to struct.
