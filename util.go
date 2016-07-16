@@ -1,8 +1,8 @@
-package goargparse
+package argparse
 
 import "reflect"
 
-func getTagVar(tag reflect.StructTag, key, default_ string) string {
+func getFromTag(tag reflect.StructTag, key, default_ string) string {
 	v := tag.Get(key)
 	if v == "" {
 		return default_
