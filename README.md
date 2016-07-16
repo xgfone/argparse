@@ -3,6 +3,8 @@ Parse the CLI arguments to a struct.
 
 The inspiration is from the package of argparse in Python Std Library. Since Go doesn't have generic type, but, it may be a little different against argparse.
 
+This module is wrapper of `flag` in go.
+
 ## Installation
 ```shell
 $ go get -u github.com/xgfone/argparse
