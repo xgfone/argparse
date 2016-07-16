@@ -84,6 +84,7 @@ func main() {
 	p.Register(&default_)
 	p.Register(&group)
 	p.Parse(strings.Split("-str 127.0.0.1 -float32 2.5 -int32 456 -uint32 456 -bool -group_str 127.0.0.1 -group_float32 2.5 -group_int32 456 -group_uint32 456", " "))
+	// p.Parse(nil) // you can add the option, -h/-help, to see the usage.
 
 	fmt.Printf("%T%+v\n", default_, default_)
 	fmt.Printf("%T%+v\n", group, group)
