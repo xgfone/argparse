@@ -141,6 +141,12 @@ func (p *Parser) setGroup(gname string, group reflect.Value) {
 	num := group.NumField()
 	for i := 0; i < num; i++ {
 		field := tg.Field(i)
+
+		// If the strategies are not passed, skip it.
+		if !validStrategy(field.Tag) {
+			continue
+		}
+
 		fname := getFromTag(field.Tag, TAG_NAME, field.Name)
 		name := p.getName(gname, fname)
 		v, ok := p.group[name]
@@ -178,6 +184,12 @@ func (p *Parser) register_flag(gname string, group reflect.Value) {
 	for i := 0; i < num; i++ {
 		// Calculate the name, the default value and help by the tag of the field.
 		field := group.Type().Field(i)
+
+		// If the strategies are not passed, skip it.
+		if !validStrategy(field.Tag) {
+			continue
+		}
+
 		_default := getFromTag(field.Tag, TAG_DEFAULT, "")
 		usage := getFromTag(field.Tag, TAG_HELP, "")
 		fname := getFromTag(field.Tag, TAG_NAME, field.Name)
