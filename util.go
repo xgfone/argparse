@@ -1,6 +1,7 @@
 package argparse
 
 import (
+	"fmt"
 	"reflect"
 	"strings"
 )
@@ -10,6 +11,31 @@ const (
 	// If there is this strategy in a certain option, don't register it.
 	STRATEGY_SKIP = "skip"
 )
+
+func Debugf(format string, a ...interface{}) (int, error) {
+	if Debug {
+		return 0, nil
+	}
+	f := fmt.Sprintf("[Debug] %v\n", format)
+	return fmt.Printf(f, a...)
+}
+
+func Infof(format string, a ...interface{}) (int, error) {
+	f := fmt.Sprintf("[Info] %v\n", format)
+	return fmt.Printf(f, a...)
+}
+
+func Errorf(format string, a ...interface{}) (int, error) {
+	f := fmt.Sprintf("[Error] %v\n", format)
+	return fmt.Printf(f, a...)
+}
+
+// Get the value of key from tag.
+//
+// This is the proxy of reflect.Tag. You can convert tag to reflect.Tag by yourself.
+func TagGet(tag, key string) string {
+	return reflect.StructTag(tag).Get(key)
+}
 
 func getFromTag(tag reflect.StructTag, key, default_ string) string {
 	v := tag.Get(key)

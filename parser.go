@@ -9,7 +9,6 @@ package argparse
 import (
 	"errors"
 	"flag"
-	"fmt"
 	"os"
 	"reflect"
 	"strings"
@@ -31,6 +30,15 @@ const (
 	// The strategy sets, which a string separated by the comma,
 	// such as "skip,valid".
 	TAG_STRATEGY = "strategy"
+
+	// Validate the option, whose values is the mehtods which are registered.
+	// When validating, they are called in turn. The values is a string
+	// separated by the comma. If the validation fails, the process exits.
+	// If don't give the validation function, assume that the validation passes.
+	//
+	// The argument of the validation function is a pointer to a variable of
+	// a field type in the group struct.
+	TAG_VALIDATE = "validate"
 )
 
 var (
@@ -45,11 +53,6 @@ var (
 	ExistError      = errors.New("This group has been registered")
 )
 
-func log(format string, a ...interface{}) (int, error) {
-	f := fmt.Sprintf("%v\n", format)
-	return fmt.Printf(f, a...)
-}
-
 type Parser struct {
 	default_group string
 	cache         map[string]interface{}
@@ -60,9 +63,7 @@ type Parser struct {
 
 // New create a new parser.
 func NewParser() *Parser {
-	if Debug {
-		log("The default group name is Default")
-	}
+	Debugf("The default group name is Default")
 	return &Parser{
 		default_group: "Default",
 		cache:         make(map[string]interface{}),
@@ -161,13 +162,17 @@ func (p *Parser) setGroup(gname string, group reflect.Value) {
 		name := p.getName(gname, fname)
 		v, ok := p.group[name]
 		if !ok {
-			break
+			Infof("Can't lookup the option: %v", name)
+			continue
 		}
 
-		if Debug {
-			log("Parsing [%v]:[%v] to %v.%v", name, reflect.ValueOf(v).Elem().Interface(),
-				gname, fname)
+		if err := methods.validate(field.Tag, reflect.ValueOf(v).Elem().Interface()); err != nil {
+			Errorf("Failed to validate the field[%v.%v]: %v", gname, field.Name, err)
+			os.Exit(1)
 		}
+
+		Debugf("Parsing [%v]:[%v] to %v.%v", name, reflect.ValueOf(v).Elem().Interface(),
+			gname, field.Name)
 
 		vfield := group.Field(i)
 		switch vfield.Kind() {
@@ -205,9 +210,7 @@ func (p *Parser) register_flag(gname string, group reflect.Value) {
 		fname := getFromTag(field.Tag, TAG_NAME, field.Name)
 		name := p.getName(gname, fname)
 
-		if Debug {
-			log("Registering the option: name[%v] default[%v] help[%v]", name, _default, usage)
-		}
+		Debugf("Registering the option: name[%v] default[%v] help[%v]", name, _default, usage)
 
 		switch group.Field(i).Kind() {
 		case reflect.Bool:
@@ -236,10 +239,8 @@ func (p *Parser) register_flag(gname string, group reflect.Value) {
 			value := parse.ToUint(_default, 10)
 			p.group[name] = p.flagSet.Uint(name, value, usage)
 		default:
-			if Debug {
-				log("Don't support the type, %v, so skip to register the option: %v.%v",
-					group.Field(i).Type().String(), gname, fname)
-			}
+			Debugf("Don't support the type, %v, so skip to register the option: %v.%v",
+				group.Field(i).Type().String(), gname, field.Name)
 		}
 	}
 }
