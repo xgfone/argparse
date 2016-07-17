@@ -22,6 +22,10 @@ func (m mValid) call(tag reflect.StructTag, name string, value interface{}) erro
 	return ValidFuncError
 }
 
+// Register a funcation to validate the option corresponding to the field.
+//
+// The first argument of the function is the tag of the field with string.
+// And the second is the value of the parsed option. Refer to ValidateNumberRange.
 func RegisterValidFunc(name string, f func(string, interface{}) error) bool {
 	if _, ok := methods[name]; ok {
 		return false

@@ -11,8 +11,8 @@ import (
 
 // Validate whether the value is in the range, [min, max].
 //
-// min and max is from the tag, that's, reflect.StructTag, which are the key-value
-// pairs in the tag of the corresponding field.
+// min and max is from the tag, that's, 'reflect.StructTag', which are
+// the key-value pairs in the tag of the corresponding field.
 //
 // The type of the value is one of int, int8, int16, int32, int64, uint, uint8,
 // uint16, uint32, uint64, float32, float64. And min and max are converted to

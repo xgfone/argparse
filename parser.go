@@ -16,7 +16,6 @@ import (
 	"github.com/xgfone/go-tools/parse"
 )
 
-// Tag
 const (
 	// The name of the option
 	TAG_NAME = "name"
@@ -34,7 +33,7 @@ const (
 	// Validate the option, whose values is the mehtods which are registered.
 	// When validating, they are called in turn. The values is a string
 	// separated by the comma. If the validation fails, the process exits.
-	// If there is a failure, they are failing. If the validation function
+	// If there is a failure, they are all failing. If the validation function
 	// isn't given, assume that the validation passes.
 	TAG_VALIDATE = "validate"
 )

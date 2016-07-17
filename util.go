@@ -37,7 +37,7 @@ func Errorf(format string, a ...interface{}) (int, error) {
 
 // Get the value of key from tag.
 //
-// This is the proxy of reflect.Tag. You can convert tag to reflect.Tag by yourself.
+// This is the proxy of 'reflect.Tag'. You can convert tag to 'reflect.Tag' by yourself.
 func TagGet(tag, key string) string {
 	return reflect.StructTag(tag).Get(key)
 }
