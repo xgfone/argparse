@@ -90,7 +90,7 @@ func main() {
 	fmt.Printf("%T%+v\n", group, group)
 
 	// Output:
-	// main.Default{String:127.0.0.1 Bool:true Float32:2.5 Float64:1.2 Int:123 Int8:123 Int16:123 Int32:456 Int64:123 Uint:123 Uint8:123 Uint16:123 Uint32:456 Uint64:123}
-	// main.Group{String:127.0.0.1 Bool:false Float32:2.5 Float64:1.2 Int:123 Int8:123 Int16:123 Int32:456 Int64:123 Uint:123 Uint8:123 Uint16:123 Uint32:456 Uint64:123}
+	// main.Default{String:127.0.0.1 Bool:true Float32:2.5 Float64:1.2 Int:123 Int8:123 Int16:123 Int32:456 Int64:123 Uint:123 Uint8:123 Uint16:123 Uint32:456 Uint64:0}
+	// main.Group{String:127.0.0.1 Bool:false Float32:2.5 Float64:1.2 Int:123 Int8:123 Int16:123 Int32:456 Int64:123 Uint:123 Uint8:123 Uint16:123 Uint32:456 Uint64:0}
 }
 ```
