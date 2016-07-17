@@ -34,10 +34,8 @@ const (
 	// Validate the option, whose values is the mehtods which are registered.
 	// When validating, they are called in turn. The values is a string
 	// separated by the comma. If the validation fails, the process exits.
-	// If don't give the validation function, assume that the validation passes.
-	//
-	// The argument of the validation function is a pointer to a variable of
-	// a field type in the group struct.
+	// If there is a failure, they are failing. If the validation function
+	// isn't given, assume that the validation passes.
 	TAG_VALIDATE = "validate"
 )
 

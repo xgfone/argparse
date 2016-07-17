@@ -12,6 +12,9 @@ const (
 	STRATEGY_SKIP = "skip"
 )
 
+// Debugf is convenient for the validation plugins.
+//
+// If Debug is false, don't output the information.
 func Debugf(format string, a ...interface{}) (int, error) {
 	if Debug {
 		return 0, nil
@@ -20,11 +23,13 @@ func Debugf(format string, a ...interface{}) (int, error) {
 	return fmt.Printf(f, a...)
 }
 
+// Infof is convenient for the validation plugins.
 func Infof(format string, a ...interface{}) (int, error) {
 	f := fmt.Sprintf("[Info] %v\n", format)
 	return fmt.Printf(f, a...)
 }
 
+// Errorf is convenient for the validation plugins.
 func Errorf(format string, a ...interface{}) (int, error) {
 	f := fmt.Sprintf("[Error] %v\n", format)
 	return fmt.Printf(f, a...)

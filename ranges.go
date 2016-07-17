@@ -9,7 +9,19 @@ import (
 	"github.com/xgfone/go-tools/parse"
 )
 
-func validateNumberRange(tag string, value interface{}) error {
+// Validate whether the value is in the range, [min, max].
+//
+// min and max is from the tag, that's, reflect.StructTag, which are the key-value
+// pairs in the tag of the corresponding field.
+//
+// The type of the value is one of int, int8, int16, int32, int64, uint, uint8,
+// uint16, uint32, uint64, float32, float64. And min and max are converted to
+// the corresponding type according to the value.
+//
+// This validation has been registered as "validate_num_range". so you can use
+// it through the tag of `validate:"validate_num_range"`. min and max are given by
+// `min:"MIN_VALUE" max:"MAX_VALUE"`.
+func ValidateNumberRange(tag string, value interface{}) error {
 	min := TagGet(tag, "min")
 	max := TagGet(tag, "max")
 

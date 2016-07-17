@@ -46,5 +46,5 @@ func (m mValid) validate(tag reflect.StructTag, value interface{}) error {
 }
 
 func init() {
-	RegisterValidFunc("validate_num_range", validateNumberRange)
+	RegisterValidFunc("validate_num_range", ValidateNumberRange)
 }
