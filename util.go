@@ -16,7 +16,7 @@ const (
 //
 // If Debug is false, don't output the information.
 func Debugf(format string, a ...interface{}) (int, error) {
-	if Debug {
+	if !Debug {
 		return 0, nil
 	}
 	f := fmt.Sprintf("[Debug] %v\n", format)
