@@ -24,8 +24,8 @@ func ExampleParser() {
 		Uint   uint   `default:"123"`
 		Uint8  uint8  `default:"123"`
 		Uint16 uint16 `default:"123"`
-		Uint32 uint32 `default:"123"`
-		Uint64 uint64 `default:"123"`
+		Uint32 uint32 `default:"123" validate:"validate_num_range", min:"100" max:"200"`
+		Uint64 uint64 `default:"123" strategy:"skip"`
 	}
 
 	type Group struct {
@@ -44,8 +44,8 @@ func ExampleParser() {
 		Uint   uint   `default:"123"`
 		Uint8  uint8  `default:"123"`
 		Uint16 uint16 `default:"123"`
-		Uint32 uint32 `default:"123"`
-		Uint64 uint64 `default:"123"`
+		Uint32 uint32 `default:"123" validate:"validate_num_range", min:"100" max:"200"`
+		Uint64 uint64 `default:"123" strategy:"skip"`
 	}
 
 	p := argparse.NewParser()
