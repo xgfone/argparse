@@ -9,7 +9,7 @@ import (
 
 func ExampleParser() {
 	type Default struct {
-		String string `name:"str" default:"0.0.0.0", help:"the ip to listen to"`
+		String string `name:"str" default:"0.0.0.0", help:"the ip to listen to" validate:"validate_str_not_empty"`
 		Bool   bool   // The default is useless, and it will be ignored.
 
 		Float32 float32 `default:"RRRR"` // The default value is ZERO
@@ -23,8 +23,8 @@ func ExampleParser() {
 
 		Uint   uint   `default:"123"`
 		Uint8  uint8  `default:"123"`
-		Uint16 uint16 `default:"123"`
-		Uint32 uint32 `default:"123" validate:"validate_num_range" min:"100" max:"200"`
+		Uint16 uint16 `default:"123" validate:"validate_num_range" min:"100" max:"200"`
+		Uint32 uint32 `default:"123"`
 		Uint64 uint64 `default:"123" strategy:"skip"`
 	}
 
@@ -43,8 +43,8 @@ func ExampleParser() {
 
 		Uint   uint   `default:"123"`
 		Uint8  uint8  `default:"123"`
-		Uint16 uint16 `default:"123"`
-		Uint32 uint32 `default:"123" validate:"validate_num_range" min:"100" max:"200"`
+		Uint16 uint16 `default:"123" validate:"validate_num_range" min:"100" max:"200"`
+		Uint32 uint32 `default:"123"`
 		Uint64 uint64 `default:"123" strategy:"skip"`
 	}
 
