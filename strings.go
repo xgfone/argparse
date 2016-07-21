@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
@@ -50,11 +51,11 @@ func ValidateStrLen(tag string, value interface{}) error {
 		var max int64
 		var err error
 
-		if min, err = strings.ParseInt(TagGet(tag, "min"), 10, 0); err != nil {
+		if min, err = strconv.ParseInt(TagGet(tag, "min"), 10, 0); err != nil {
 			return errors.New(fmt.Sprintf("[min] %v", err))
 		}
 
-		if max, err = strings.ParseInt(TagGet(tag, "max"), 10, 0); err != nil {
+		if max, err = strconv.ParseInt(TagGet(tag, "max"), 10, 0); err != nil {
 			return errors.New(fmt.Sprintf("[max] %v", err))
 		}
 
