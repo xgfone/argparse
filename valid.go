@@ -90,6 +90,6 @@ func RegisterValidFunc(name string, f func(string, interface{}) error) bool {
 }
 
 func init() {
-	RegisterValidFunc("validate_num_range", ValidateNumberRange)
-	RegisterValidFunc("validate_str_not_empty", ValidateStrNotEmpty)
+	RegisterValidator("validate_num_range", ValidateNumberRange)
+	RegisterValidator("validate_str_not_empty", ValidateStrNotEmpty)
 }
