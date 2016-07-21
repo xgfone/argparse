@@ -163,7 +163,7 @@ func (p *Parser) setGroup(gname string, group reflect.Value) {
 			continue
 		}
 
-		if err := methods.validate(field.Tag, reflect.ValueOf(v).Elem().Interface()); err != nil {
+		if err := validators.Validate(field.Tag, reflect.ValueOf(v).Elem().Interface()); err != nil {
 			Errorf("Failed to validate the field[%v.%v]: %v", gname, field.Name, err)
 			os.Exit(1)
 		}
