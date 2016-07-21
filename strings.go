@@ -38,8 +38,10 @@ func ValidateStrNotEmpty(tag string, value interface{}) error {
 //
 // This validation has been registered as "validate_str_len". so you can use
 // it through the tag of `validate:"validate_str_len"`. min and max are given
-// by `min:"MIN_VALUE" max:"MAX_VALUE"`, which are converted to the integers.
-// If failed to convert, return an error.
+// by `min:"MIN_VALUE" max:"MAX_VALUE"`, which are converted to the integers
+// based on the base 10. If failed to convert, return an error.
+// min or max or both maybe been omitted. If either is been omitted,
+// it is considered to pass the validation.
 //
 // Notice: the leading and tail whitespaces of the value will be trimed down,
 // then calculate.
@@ -47,25 +49,22 @@ func ValidateStrLen(tag string, value interface{}) error {
 	if v, ok := value.(string); !ok {
 		return errors.New("The type of the value is not string")
 	} else {
-		var min int64
-		var max int64
-		var err error
-
-		if min, err = strconv.ParseInt(TagGet(tag, "min"), 10, 0); err != nil {
-			return errors.New(fmt.Sprintf("[min] %v", err))
-		}
-
-		if max, err = strconv.ParseInt(TagGet(tag, "max"), 10, 0); err != nil {
-			return errors.New(fmt.Sprintf("[max] %v", err))
-		}
-
 		_len := int64(len(v))
-		if min > _len {
-			return errors.New("The length of the value is less than min")
+
+		if min := strings.TrimSpace(TagGet(tag, "min")); min != "" {
+			if vmin, err := strconv.ParseInt(min, 10, 0); err != nil {
+				return errors.New(fmt.Sprintf("[min] %v", err))
+			} else if vmin > _len {
+				return errors.New("The length of the value is less than min")
+			}
 		}
 
-		if _len > max {
-			return errors.New("The length of the value is greater than max")
+		if max := strings.TrimSpace(TagGet(tag, "max")); max != "" {
+			if vmax, err := strconv.ParseInt(max, 10, 0); err != nil {
+				return errors.New(fmt.Sprintf("[max] %v", err))
+			} else if vmax > _len {
+				return errors.New("The length of the value is greater than max")
+			}
 		}
 
 		return nil
@@ -74,8 +73,8 @@ func ValidateStrLen(tag string, value interface{}) error {
 
 // Validate whether the value matches the pattern that is from the tag of "pattern".
 //
-// The value must be a string. If not, return an error. If the pattern is empty,
-// return nil. If matching successfully, return nil. Or false.
+// The value must be a string. If not, return an error. If the pattern is empty
+// or doesn't exist, return nil. If matching successfully, return nil. Or false.
 //
 // This validation has been registered as "validate_str_reg". so you can use
 // it through the tag of `validate:"validate_str_reg"`. The pattern is acquired

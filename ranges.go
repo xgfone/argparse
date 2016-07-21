@@ -20,7 +20,8 @@ import (
 //
 // This validation has been registered as "validate_num_range". so you can use
 // it through the tag of `validate:"validate_num_range"`. min and max are given by
-// `min:"MIN_VALUE" max:"MAX_VALUE"`.
+// `min:"MIN_VALUE" max:"MAX_VALUE"`. min or max or both maybe been omitted.
+// If either is been omitted, it is considered to pass the validation.
 func ValidateNumberRange(tag string, value interface{}) error {
 	min := TagGet(tag, "min")
 	max := TagGet(tag, "max")
