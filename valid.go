@@ -93,6 +93,6 @@ func init() {
 	RegisterValidator("validate_num_range", ValidateNumberRange)
 	RegisterValidator("validate_str_not_empty", ValidateStrNotEmpty)
 	RegisterValidator("validate_str_len", ValidateStrLen)
-	RegisterValidator("validate_str_reg", ValidateStrReg)
+	RegisterValidator("validate_str_regexp", ValidateStrRegexp)
 	RegisterValidator("validate_digit", ValidateDigit)
 }

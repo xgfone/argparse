@@ -76,13 +76,13 @@ func ValidateStrLen(tag string, value interface{}) error {
 // The value must be a string. If not, return an error. If the pattern is empty
 // or doesn't exist, return nil. If matching successfully, return nil. Or false.
 //
-// This validation has been registered as "validate_str_reg". so you can use
-// it through the tag of `validate:"validate_str_reg"`. The pattern is acquired
+// This validation has been registered as "validate_str_regexp". so you can use
+// it through the tag of `validate:"validate_str_regexp"`. The pattern is acquired
 // by the tag `pattern:"PATTERN"`. The validation way is regexp.MatchString().
 //
 // Notice: the leading and tail whitespaces of the value will be trimed down,
 // then calculate.
-func ValidateStrReg(tag string, value interface{}) error {
+func ValidateStrRegexp(tag string, value interface{}) error {
 	if s, ok := value.(string); !ok {
 		return errors.New("The type of the value is not string")
 	} else if pattern := strings.TrimSpace(TagGet(tag, "pattern")); pattern == "" {
