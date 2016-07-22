@@ -78,7 +78,7 @@ func ValidateStrLen(tag string, value interface{}) error {
 //
 // This validation has been registered as "validate_str_reg". so you can use
 // it through the tag of `validate:"validate_str_reg"`. The pattern is acquired
-// by the tag `pattern:"PATTERN"`.
+// by the tag `pattern:"PATTERN"`. The validation way is regexp.MatchString().
 //
 // Notice: the leading and tail whitespaces of the value will be trimed down,
 // then calculate.
