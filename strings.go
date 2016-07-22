@@ -74,7 +74,7 @@ func ValidateStrLen(tag string, value interface{}) error {
 // Validate whether the value matches the pattern that is from the tag of "pattern".
 //
 // The value must be a string. If not, return an error. If the pattern is empty
-// or doesn't exist, return nil. If matching successfully, return nil. Or false.
+// or doesn't exist, return nil. If matching successfully, return nil. Or an error.
 //
 // This validation has been registered as "validate_str_regexp". so you can use
 // it through the tag of `validate:"validate_str_regexp"`. The pattern is acquired
