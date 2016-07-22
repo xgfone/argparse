@@ -8,10 +8,7 @@ import (
 )
 
 var (
-	// Deprecated, not used no more.
-	ValidFuncError = errors.New("The validation function doesn't exist")
-
-	ValidatorError = errors.New("The validation function doesn't exist")
+	validatorError = errors.New("The validation function doesn't exist")
 	validators     = make(tValidation)
 )
 
@@ -59,7 +56,7 @@ func (t tValidation) call(tag reflect.StructTag, name string, value interface{})
 		}
 	}
 
-	return ValidatorError
+	return validatorError
 }
 
 func (t tValidation) Validate(tag reflect.StructTag, value interface{}) error {
