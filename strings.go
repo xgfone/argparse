@@ -62,7 +62,7 @@ func ValidateStrLen(tag string, value interface{}) error {
 		if max := strings.TrimSpace(TagGet(tag, "max")); max != "" {
 			if vmax, err := strconv.ParseInt(max, 10, 0); err != nil {
 				return errors.New(fmt.Sprintf("[max] %v", err))
-			} else if vmax > _len {
+			} else if _len > vmax {
 				return errors.New("The length of the value is greater than max")
 			}
 		}
