@@ -47,10 +47,10 @@ func RegisterValidator(name string, validator interface{}) bool {
 
 type tValidation map[string]interface{}
 
-func (t tValidation) call(tag reflect.StructTag, name string, value interface{}) error {
+func (t tValidation) call(tag reflect.StructTag, name string, value interface{}) (err error) {
 	defer func() {
-		if err := recover(); err != nil {
-			return errors.New("This validator panics: %v", err)
+		if _err := recover(); _err != nil {
+			err = errors.New(fmt.Sprintf("panic: %v", _err))
 		}
 	}()
 

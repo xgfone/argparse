@@ -70,6 +70,8 @@ func ValidateNumberRange(tag string, value interface{}) error {
 		} else {
 			vmax = v
 		}
+	default:
+		return errors.New(fmt.Sprintf("Don't support the type: %v", reflect.ValueOf(value).Kind()))
 	}
 	v := reflect.ValueOf(value).Convert(typ).Interface()
 

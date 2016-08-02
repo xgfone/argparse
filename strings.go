@@ -7,8 +7,6 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
-
-	"github.com/xgfone/go-tools/compare"
 )
 
 const (
@@ -160,16 +158,18 @@ func ValidateIP6(tag string, value interface{}) error {
 //
 // It's registered as "validate_str_array".
 func ValidateStrArray(tag string, value interface{}) error {
-	v, ok := value.([]string)
-	if ok != nil {
-		return errors.New("The type of the value must be []string")
+	v, ok := value.(string)
+	if !ok {
+		return errors.New("The type of the value must be string")
 	}
 	array := strings.Split(TagGet(tag, "array"), ",")
-	if compare.NE(v, array) {
-		return errors.New("%v is not equal to %v", v, array)
+	for _, s := range array {
+		if s == v {
+			return nil
+		}
 	}
 
-	return nil
+	return errors.New(fmt.Sprintf("The value[%v] is not in %v", v, array))
 }
 
 func init() {
