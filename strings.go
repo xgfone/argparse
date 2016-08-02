@@ -7,6 +7,8 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+
+	"github.com/xgfone/go-tools/compare"
 )
 
 const (
@@ -151,11 +153,31 @@ func ValidateIP6(tag string, value interface{}) error {
 	return nil
 }
 
+// Validate whether the value is in the string array came from the tag of array.
+//
+// when using this validtor, you should give the tag, array, which is separated
+// by the comma.
+//
+// It's registered as "validate_str_array".
+func ValidateStrArray(tag string, value interface{}) error {
+	v, ok := value.([]string)
+	if ok != nil {
+		return errors.New("The type of the value must be []string")
+	}
+	array := strings.Split(TagGet(tag, "array"), ",")
+	if compare.NE(v, array) {
+		return errors.New("%v is not equal to %v", v, array)
+	}
+
+	return nil
+}
+
 func init() {
 	RegisterValidator("validate_str_not_empty", ValidateStrNotEmpty)
 	RegisterValidator("validate_str_len", ValidateStrLen)
 	RegisterValidator("validate_str_regexp", ValidateStrRegexp)
 	RegisterValidator("validate_digit", ValidateDigit)
+	RegisterValidator("validate_str_array", ValidateStrArray)
 
 	RegisterValidator("validate_ip", ValidateIP)
 	RegisterValidator("validate_ip4", ValidateIP4)
