@@ -83,3 +83,7 @@ func ValidateNumberRange(tag string, value interface{}) error {
 
 	return nil
 }
+
+func init() {
+	RegisterValidator("validate_num_range", ValidateNumberRange)
+}

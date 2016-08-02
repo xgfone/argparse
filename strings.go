@@ -3,6 +3,7 @@ package argparse
 import (
 	"errors"
 	"fmt"
+	"net"
 	"regexp"
 	"strconv"
 	"strings"
@@ -117,4 +118,46 @@ func ValidateDigit(tag string, value interface{}) error {
 		}
 	}
 	return nil
+}
+
+// Validate whether the value is the valid ip by net.ParseIP, which is registered
+// as "validate_ip".
+func ValidateIP(tag string, value interface{}) error {
+	ip := net.ParseIP(value.(string))
+	if ip == nil {
+		return errors.New("The format of the ip is invalid")
+	}
+	return nil
+}
+
+// Validate whether the value is the valid ipv4 by net.ParseIP, which is registered
+// as "validate_ip4".
+func ValidateIP4(tag string, value interface{}) error {
+	ip := net.ParseIP(value.(string))
+	if ip == nil || ip.To4() == nil {
+		return errors.New("The format of the ip is invalid")
+	}
+
+	return nil
+}
+
+// Validate whether the value is the valid ipv6 by net.ParseIP, which is registered
+// as "validate_ip6".
+func ValidateIP6(tag string, value interface{}) error {
+	ip := net.ParseIP(value.(string))
+	if ip == nil || ip.To16() == nil {
+		return errors.New("The format of the ip is invalid")
+	}
+	return nil
+}
+
+func init() {
+	RegisterValidator("validate_str_not_empty", ValidateStrNotEmpty)
+	RegisterValidator("validate_str_len", ValidateStrLen)
+	RegisterValidator("validate_str_regexp", ValidateStrRegexp)
+	RegisterValidator("validate_digit", ValidateDigit)
+
+	RegisterValidator("validate_ip", ValidateIP)
+	RegisterValidator("validate_ip4", ValidateIP4)
+	RegisterValidator("validate_ip6", ValidateIP6)
 }
