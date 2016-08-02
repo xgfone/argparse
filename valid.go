@@ -48,6 +48,12 @@ func RegisterValidator(name string, validator interface{}) bool {
 type tValidation map[string]interface{}
 
 func (t tValidation) call(tag reflect.StructTag, name string, value interface{}) error {
+	defer func() {
+		if err := recover(); err != nil {
+			return errors.New("This validator panics: %v", err)
+		}
+	}()
+
 	if validator, ok := t[name]; ok {
 		if validation, ok := validator.(Validation); ok {
 			return validation.Validate(string(tag), value)
