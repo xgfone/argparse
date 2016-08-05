@@ -9,6 +9,7 @@ package argparse
 import (
 	"errors"
 	"flag"
+	"fmt"
 	"os"
 	"reflect"
 	"strings"
@@ -51,6 +52,9 @@ var (
 )
 
 type Parser struct {
+	// Panic if true, Or return an error, when failing to parse the options.
+	// The default is true.
+	Panic         bool
 	default_group string
 	cache         map[string]interface{}
 	group         map[string]interface{}
@@ -62,10 +66,11 @@ type Parser struct {
 func NewParser() *Parser {
 	Debugf("The default group name is Default")
 	return &Parser{
+		Panic:         true,
 		default_group: "Default",
 		cache:         make(map[string]interface{}),
 		group:         make(map[string]interface{}),
-		flagSet:       flag.NewFlagSet(os.Args[0], flag.ExitOnError),
+		flagSet:       flag.NewFlagSet(os.Args[0], flag.PanicOnError),
 	}
 }
 
@@ -79,16 +84,28 @@ func (p *Parser) SetDefaultGroup(name string) {
 // If args is not nil, it's the arguments. Or use os.Args[1:].
 // If it has been parsed, don't parse it again.
 // For parsing it againt, you can create a new parser.
-func (p *Parser) Parse(args []string) {
-	if args == nil {
-		args = os.Args[1:]
-	}
+//
+// Notice: It will panic if Panic is true when failing to parse.
+func (p *Parser) Parse(args []string) (err error) {
+	defer func() {
+		if !p.Panic {
+			if _err := recover(); _err != nil {
+				err = fmt.Errorf("%v", _err)
+			}
+		}
+	}()
 
 	if p.parsed {
 		return
 	}
+
+	if args == nil {
+		args = os.Args[1:]
+	}
+
 	p.flagSet.Parse(args)
-	p.setSalues()
+	p.setValues()
+	return nil
 }
 
 // Return true if parsed, or false.
@@ -128,7 +145,7 @@ func (p *Parser) Register(group interface{}) error {
 	return nil
 }
 
-func (p *Parser) setSalues() {
+func (p *Parser) setValues() {
 	for k, v := range p.cache {
 		p.setGroup(k, reflect.ValueOf(v).Elem())
 	}
@@ -164,8 +181,8 @@ func (p *Parser) setGroup(gname string, group reflect.Value) {
 		}
 
 		if err := validators.Validate(field.Tag, reflect.ValueOf(v).Elem().Interface()); err != nil {
-			Errorf("Failed to validate the field[%v.%v]: %v", gname, field.Name, err)
-			os.Exit(1)
+			msg := fmt.Sprintf("Failed to validate the field[%v.%v]: %v", gname, field.Name, err)
+			panic(msg)
 		}
 
 		Debugf("Parsing [%v]:[%v] to %v.%v", name, reflect.ValueOf(v).Elem().Interface(),
