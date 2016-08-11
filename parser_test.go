@@ -54,12 +54,14 @@ func ExampleParser() {
 
 	p.Register(&default_)
 	p.Register(&group)
-	p.Parse(strings.Split("-str 127.0.0.1 -float32 2.5 -int32 456 -uint32 456 -bool -group_str 127.0.0.1 -group_float32 2.5 -group_int32 456 -group_uint32 456", " "))
+	p.Parse(strings.Split("-str 127.0.0.1 -float32 2.5 -int32 456 -uint32 456 -bool -group_str 127.0.0.1 -group_float32 2.5 -group_int32 456 -group_uint32 456 Arg1 Arg2", " "))
 
 	fmt.Printf("%T%+v\n", default_, default_)
 	fmt.Printf("%T%+v\n", group, group)
+	fmt.Printf("%v %v\n", p.NArg(), p.Args())
 
 	// Output:
 	// argparse_test.Default{String:127.0.0.1 Bool:true Float32:2.5 Float64:1.2 Int:123 Int8:123 Int16:123 Int32:456 Int64:123 Uint:123 Uint8:123 Uint16:123 Uint32:456 Uint64:0}
 	// argparse_test.Group{String:127.0.0.1 Bool:false Float32:2.5 Float64:1.2 Int:123 Int8:123 Int16:123 Int32:456 Int64:123 Uint:123 Uint8:123 Uint16:123 Uint32:456 Uint64:0}
+	// 2 [Arg1 Arg2]
 }

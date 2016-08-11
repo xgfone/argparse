@@ -258,3 +258,18 @@ func (p *Parser) register_flag(gname string, group reflect.Value) {
 		}
 	}
 }
+
+// The proxy of flag.FlagSet.Arg().
+func (p *Parser) Arg(i int) string {
+	return p.flagSet.Arg(i)
+}
+
+// The proxy of flag.FlagSet.Args().
+func (p *Parser) Args() []string {
+	return p.flagSet.Args()
+}
+
+// The proxy of flag.FlagSet.NArg().
+func (p *Parser) NArg() int {
+	return p.flagSet.NArg()
+}
