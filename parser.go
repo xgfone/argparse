@@ -53,13 +53,12 @@ var (
 
 type Parser struct {
 	// Panic if true, Or return an error, when failing to parse the options.
-	// The default is true.
+	// The default is true. Deprecated! Please use SetPanic().
 	Panic         bool
 	default_group string
 	cache         map[string]interface{}
 	group         map[string]interface{}
 	flagSet       *flag.FlagSet
-	parsed        bool
 }
 
 // New create a new parser.
@@ -75,8 +74,15 @@ func NewParser() *Parser {
 }
 
 // Set the name of the default group. Must set it before registering the options.
-func (p *Parser) SetDefaultGroup(name string) {
+func (p *Parser) SetDefaultGroup(name string) *Parser {
 	p.default_group = name
+	return p
+}
+
+// Set whether the parser will panic when failed.
+func (p *Parser) SetPanic(is_panic bool) *Parser {
+	p.Panic = is_panic
+	return p
 }
 
 // Parse the arguments to the registered structs.
@@ -95,11 +101,11 @@ func (p *Parser) Parse(args []string) (err error) {
 		}
 	}()
 
-	if p.parsed {
+	if p.Parsed() {
 		return
 	}
 
-	if args == nil {
+	if len(args) == 0 {
 		args = os.Args[1:]
 	}
 
@@ -110,7 +116,7 @@ func (p *Parser) Parse(args []string) (err error) {
 
 // Return true if parsed, or false.
 func (p Parser) Parsed() bool {
-	return p.parsed
+	return p.flagSet.Parsed()
 }
 
 // Register a pointer to struct.
