@@ -279,3 +279,7 @@ func (p *Parser) Args() []string {
 func (p *Parser) NArg() int {
 	return p.flagSet.NArg()
 }
+
+func (p *Parser) PrintDefaults() {
+	p.flagSet.PrintDefaults()
+}
